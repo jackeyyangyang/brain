@@ -33,6 +33,8 @@ mkdir -p brain/skills/coding/code-learn
 
 `brain/learnings/` - 代码修改的学习沉淀，按日期存储。
 
-## 软连接说明
+## Guides
+
+`brain/guide/` - 基础设施参考指南（如 ceph 挂载）。
 
 `brain/skills/` 是实际目录，直接创建/编辑即可。
