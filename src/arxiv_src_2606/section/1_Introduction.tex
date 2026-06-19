@@ -1,0 +1,45 @@
+% !TEX root = ../MLEvolve.tex
+
+\section{Introduction}
+
+
+% --- Paragraph 1: AI for Science + LLM Agent + Long-horizon + Self-evolution ---
+Artificial intelligence (AI) is reshaping scientific research and complex engineering, leading to the paradigm of AI for Science~\citep{van2023ai4Science}. With the continued advancement of large language models (LLMs), LLM-based agent systems~\citep{du2026survey} are now being applied to long-horizon autonomous tasks such as scientific discovery~\citep{aiscientist,team2025novelseek}, automated experimentation~\citep{feng2026internagent}, and end-to-end algorithm design~\citep{novikov2025alphaevolve}. Unlike single-turn reasoning, these scenarios involve open search spaces and limited time budgets, where agents must continually generate solutions, execute code, evaluate outcomes, and adjust strategies based on feedback. During this process, the agent continuously evolves: accumulating experience from past trials, adaptively adjusting exploration strategies, and progressively refining implementations according to the current search stage. This sustained self-evolving capability is becoming central to long-horizon autonomous agents.
+
+
+% --- Paragraph 2: MLE as representative scenario + AutoML + LLM coding agents ---
+Machine Learning Engineering (MLE) is one of the most representative scenarios for such long-horizon self-evolving tasks. Designing high-performance AI systems still relies heavily on expert knowledge and extensive manual iteration~\citep{amershi2019software-mle}. Although recent advances in AutoML~\citep{he2021automl,feurer2022auto-sklearn} have achieved significant progress in optimizing discrete stages such as data processing and model selection, they often fall short of covering the entire end-to-end MLE pipeline, \textit{i.e.}, from data preparation to model training and inference.
+Recently, LLM-based coding agents have been applied to MLE scenarios~\citep{wang2024openhands,mlab,aide,rdagent,ml-master}, using the planning and code generation capabilities of LLMs to iteratively optimize within open search spaces. These agents typically employ greedy or evolutionary search~\citep{aide,li2025fm}, Monte Carlo Tree Search~\citep{ml-master,dojo}, or multi-agent collaboration~\citep{rdagent} to explore candidate solutions.
+
+Despite these advances, existing MLE agents still face three key challenges that hinder self-evolution over long horizons.
+% 挑战1
+First, existing search mechanisms are limited by \textbf{\textit{information isolation}} between branches and lack adaptive exploration strategies. Most methods adopt linear or tree-structured search~\citep{aide,ml-master,dojo}, confining information within individual branches and making it difficult to transfer successful strategies across different search trajectories. Moreover, these methods generally employ fixed exploration strategies throughout the optimization process, leading to inefficient resource allocation under limited time budgets.
+% 挑战2
+Second, most search frameworks are \textbf{\textit{memoryless}} and unable to accumulate experience from past interactions~\citep{automind,chen2026mars}. Current search frameworks propagate only scalar rewards, resulting in each planning decision being made in isolation without reusing insights from similar attempts earlier in the search.  While some recent methods explore memory mechanisms~\citep{automind,chen2026mars,zhu2026mlmaster2}, they require extra LLM calls or provide only static knowledge, lacking automatic experience accumulation during search.
+% 挑战3
+Third, most existing methods couple planning and code implementation into one-shot generation, \textbf{\textit{lacking hierarchical control}}. A reasonable design requires distinguishing \emph{what to modify} from \emph{how to implement}, yet many methods~\citep{ml-master,du2025automlgen} rewrite the entire solution at every iteration, resulting in low iteration efficiency and uncontrollable modifications.
+
+\begin{figure}[thbp]
+\begin{center}
+    \vspace{-0.5em}
+    \includegraphics[width=0.96\linewidth]{figures/mle-intro.pdf}
+    \vspace{-0.5em}
+    \caption{\textbf{Overview of \sname that summarizes its core components and supported tasks.} Existing MLE agents suffer from inter-branch isolation, memoryless exploration, and lack of hierarchical control. \sname addresses these through Progressive MCGS, Retrospective Memory, and Hierarchical Planning with Adaptive Code Generation, supporting long-horizon iterative optimization tasks, such as end-to-end MLE and mathematical algorithm discovery.}
+    \label{fig:overview}
+\end{center}
+\end{figure}
+
+To bridge this gap, we present \textbf{\sname} (Figure~\ref{fig:overview}), an LLM-based self-evolving multi-agent framework for MLE tasks. \sname unifies three core components: (1)~\textbf{Progressive Monte Carlo Graph Search (MCGS)}, which addresses isolation and limited reuse in tree search through graph-based cross-branch information flow, and introduces an entropy-inspired progressive exploration schedule that adaptively steers the search from broad exploration to focused exploitation over time; (2)~\textbf{Retrospective Memory}, pairing a curated domain knowledge base for cold-start initialization with a dynamic global memory that automatically accumulates and retrieves task-specific experience throughout the search; and (3)~\textbf{Hierarchical Planning with Adaptive Code Generation}, which separates strategic planning from code generation and selects among full rewrite, stepwise, and diff-based editing modes according to the current search state.
+Consequently, \sname achieves more stable and self-evolving exploration of end-to-end ML pipelines, leading to stronger solutions for challenging MLE tasks. Experimental results show that \sname achieves a 65.3\% average medal rate on MLE-Bench under a 12-hour budget (half the standard runtime), establishing state-of-the-art performance, and further outperforms specialized algorithm discovery methods including AlphaEvolve~\citep{novikov2025alphaevolve} on mathematical optimization tasks.
+
+
+Our key contributions are as follows:
+
+\begin{itemize}[leftmargin=*]
+    \item We propose \sname, a self-evolving multi-agent framework for end-to-end MLE tasks, which unifies progressive graph search, retrospective memory, and hierarchical adaptive code generation to support long-horizon iterative optimization.
+    
+    \item We introduce Progressive MCGS and Retrospective Memory for self-evolving optimization. Progressive MCGS resolves inter-branch isolation through graph-based cross-branch information flow and a progressive exploration schedule, while Retrospective Memory enables automatic experience accumulation and retrieval throughout the search.
+    
+    \item Extensive experiments show that \sname achieves a 65.3\% average medal rate on MLE-Bench under a 12-hour budget, achieving the best among all existing methods, and further outperforms AlphaEvolve~\citep{novikov2025alphaevolve} and AlphaEvolve-v2~\citep{alphaevolve_v2} on mathematical optimization tasks, demonstrating cross-domain generalization.
+
+\end{itemize}

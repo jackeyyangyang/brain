@@ -1,0 +1,75 @@
+\begin{table*}[!t]
+    \centering
+    \caption{Main results on MLE-Bench (75 tasks, full set). Medal rates are reported across three complexity levels and overall, along with valid submission rate, above-median rate, and gold medal rate. Results are mean $\pm$ SEM over 3 seeds. We group methods by whether their code is publicly available. Best results are in \textbf{bold}; second best is \underline{underlined}.}
+    \vspace{-0.5em}
+    \label{tab:main_res}
+    
+    \setlength{\tabcolsep}{3.5pt}
+    \renewcommand{\arraystretch}{1.05}
+    
+    \scriptsize
+    \begin{tabularx}{\linewidth}{@{}lCCCCC|CCC@{}}
+    \toprule
+    & & \multicolumn{4}{c|}{\textbf{Medal rate by complexity}} & \multicolumn{3}{c}{\textbf{Other evaluation dimensions}} \\
+    \cmidrule(lr){3-6} \cmidrule(lr){7-9}
+    \textbf{Agent} & \textbf{\mbox{Time (h)}} & \textbf{\mbox{Low (\%)}} & \textbf{\mbox{Medium (\%)}} & \textbf{\mbox{High (\%)}} & \textbf{\mbox{All (\%)}} & \textbf{\mbox{Valid (\%)}} & \textbf{\mbox{Med+ (\%)}} & \textbf{\mbox{Gold (\%)}} \\
+    \midrule
+    
+    \multicolumn{9}{c}{\textbf{\textit{Proprietary Methods}}} \\
+    \midrule  
+    
+    \multicolumn{9}{@{}l}{\textbf{FM-Agent}~\citep{li2025fm}} \\
+    Gemini-2.5-Pro & 24 & 62.1±1.5 & 36.8±1.5 & 33.3±0.0 & 43.6±0.9 & 96.9±1.2 & 51.6±1.2 & 22.7±0.8 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{MLE-STAR-Pro-1.5}~\citep{mle-star}} \\
+    Gemini-2.5-Pro & 24 & 68.2±2.6 & 34.2±1.5 & 33.3±0.0 & 44.0±1.3 & 93.8±0.4 & 52.9±1.6 & 19.1±1.8 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{MARS}~\citep{chen2026mars}} \\
+    Gemini-3-Pro-preview & 24 & 74.2±1.5 & 52.6±3.0 & 37.8±2.2 & 56.0±1.5 & \underline{98.7±0.0} & 65.8±1.6 & 31.1±0.4 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{MARS+}~\citep{chen2026mars}} \\
+    Gemini-3-Pro-preview & 24 & \underline{78.8±1.5} & 60.5±1.5 & \underline{44.4±2.2} & 62.7±0.8 & \textbf{100.0±0.0} & \underline{74.2±0.9} & \underline{33.8±0.4} \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{AIBuildAI}~\citep{zhang2026aibuildai}} \\
+    Claude-Opus-4.6 & 24 & 77.3±0.0 & \underline{61.4±0.9} & \textbf{46.7±0.0} & \underline{63.1±0.4} & \textbf{100.0±0.0} & 71.1±1.2 & 25.8±0.4 \\
+    
+    \arrayrulecolor{black}\midrule
+    \multicolumn{9}{c}{\textbf{\textit{Open-Source Methods}}} \\
+    \midrule  
+    
+    \multicolumn{9}{@{}l}{\textbf{AIDE}~\citep{aide}} \\
+    o1-preview & 24 & 35.9±1.9 & 8.5±0.4 & 11.7±1.3 & 17.1±0.6 & 82.8±1.1 & 29.4±1.3 & 9.4±0.8 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{R\&D-Agent}~\citep{rdagent}} \\
+    gpt-5 & 12 & 68.2±2.6 & 21.1±1.5 & 22.2±2.2 & 35.1±0.4 & 53.3±0.0 & 40.4±0.9 & 16.4±0.9 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{ML-Master}~\citep{ml-master}} \\
+    DeepSeek-R1 & 12 & 48.5±1.5 & 20.2±2.3 & 24.4±2.2 & 29.3±0.8 & 93.3±1.3 & 44.9±1.2 & 17.3±0.8 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{AIRA-Dojo}~\citep{dojo}} \\
+    o3 & 24 & 55.0±1.5 & 22.0±1.2 & 21.7±1.1 & 31.6±0.8 & 97.5±0.3 & 45.5±0.8 & 17.3±0.4 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{Leeroo}~\citep{nadafian2026kapso}} \\
+    Gemini-3-Pro-preview & 24 & 68.2±2.6 & 44.7±1.5 & 40.0±0.0 & 50.7±1.3 & 50.7±1.3 & 50.7±1.3 & 21.3±2.0 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{ML-Master 2.0}~\citep{zhu2026mlmaster2}} \\
+    DeepSeek-V3.2-Speciale & 24 & 75.8±1.5 & 50.9±3.5 & 42.2±2.2 & 56.4±2.5 & 95.6±1.2 & 63.1±1.2 & 19.6±0.9 \\
+    \arrayrulecolor{black!30}\midrule
+    
+    \multicolumn{9}{@{}l}{\textbf{\sname\ (ours)}} \\
+    \rowcolor[RGB]{222,236,215}
+    Gemini-3.1-Pro-preview & \textbf{12} & \textbf{80.3±1.5} & \textbf{64.0±0.9} & \textbf{46.7±0.0} & \textbf{65.3±0.8} & \textbf{100.0±0.0} & \textbf{76.0±2.3} & \textbf{34.7±0.0} \\
+    
+    \arrayrulecolor{black}\bottomrule
+    \end{tabularx}
+    \end{table*}
+    

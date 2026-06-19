@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Component-level ablation on MLE-Bench Lite (22 tasks). Each row removes one core component of \sname. Beat Ratio is the average percentage of human Kaggle competitors outperformed. Best performances are marked in bold.}
+\vspace{-0.5em}
+\label{tab:ablation}
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Configuration} & \textbf{Medal (\%)} & \textbf{Gold (\%)} & \textbf{Beat Ratio (\%)} \\
+\midrule
+\rowcolor[RGB]{222,236,215}
+\textbf{\sname} & \textbf{81.82} & \textbf{54.55} & \textbf{88.39} \\
+\quad w/o Progressive MCGS & 68.18 & 40.91 & 79.91 \\
+\quad w/o Retrospective Memory & 68.18 & 50.00 & 81.90 \\
+\quad w/o Adaptive Code Generation & 72.73 & 40.91 & 84.14 \\
+\bottomrule
+\end{tabular}
+\end{table}

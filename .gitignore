@@ -1,0 +1,28 @@
+# Dependencies
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Build outputs
+output/
+*.pdf
+*.tex.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.tmp
+*.swp

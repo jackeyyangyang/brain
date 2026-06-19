@@ -1,0 +1,26 @@
+\begin{table}[t]
+\centering
+\caption{Detailed component analysis on 9 representative tasks. Each row disables one mechanism within Progressive MCGS or Retrospective Memory while keeping all others unchanged.}
+\vspace{-0.5em}
+\label{tab:fine_grained_ablation}
+\small
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Configuration} & \textbf{Medal (\%)} & \textbf{Beat Ratio (\%)} \\
+\midrule
+\rowcolor[RGB]{222,236,215}
+\textbf{\sname} & \textbf{66.67} & \textbf{82.43} \\
+\midrule
+\multicolumn{3}{l}{\emph{Progressive MCGS}} \\
+\quad w/o Evolution      & 33.33 & 74.95 \\
+\quad w/o Cross-branch   & 55.56 & 75.93 \\
+\quad w/o Elite-Guided   & 55.56 & 71.39 \\
+\midrule
+\multicolumn{3}{l}{\emph{Retrospective Memory}} \\
+\quad w/o Knowledge Base & 44.44 & 76.07 \\
+\quad w/o Global Memory  & 44.44 & 73.58 \\
+\bottomrule
+\end{tabular}
+\end{table}

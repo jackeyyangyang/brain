@@ -1,0 +1,30 @@
+\begin{table*}[t]
+    \centering
+    \caption{Score comparison of \sname across four LLM backbones on 8 representative MLE-Bench tasks. Best result for each task is highlighted in \textbf{bold}.}
+    \label{tab:multi_model_score}
+    \resizebox{1.0\linewidth}{!}{
+    \setlength{\tabcolsep}{6pt}
+    \begin{tabular}{llcccc}
+      \toprule
+      \textbf{Task} & \textbf{Metric} & \textbf{Gemini-3.1-Pro-preview} & \textbf{GPT-5.5} & \textbf{DeepSeek-v4-Pro} & \textbf{Kimi-K2.6} \\
+      \cmidrule(lr){3-6}
+      \multicolumn{6}{l}{\textit{Image Tasks}}\\
+      \midrule
+      cassava-leaf-disease-classification      & Accuracy $\uparrow$   & 0.8984 & 0.8999 & \textbf{0.9032} & 0.8905 \\
+      ranzcr-clip-catheter-line-classification & AUC $\uparrow$        & \textbf{0.9638} & 0.9568 & 0.8375 & 0.8880 \\
+      siim-isic-melanoma-classification        & AUC $\uparrow$        & 0.9252 & 0.9045 & 0.8662 & \textbf{0.9294} \\
+      \midrule
+      \multicolumn{6}{l}{\textit{NLP Tasks}}\\
+      \midrule
+      tweet-sentiment-extraction               & Jaccard $\uparrow$    & 0.7136 & \textbf{0.7216} & 0.7113 & 0.7195 \\
+      spooky-author-identification             & Logloss $\downarrow$  & \textbf{0.2175} & 0.2324 & 0.2298 & 0.2305 \\
+      random-acts-of-pizza                     & AUC $\uparrow$        & 0.6992 & \textbf{0.7888} & 0.7782 & 0.7649 \\
+      \midrule
+      \multicolumn{6}{l}{\textit{Audio Tasks}}\\
+      \midrule
+      the-icml-2013-whale-challenge-right-whale-redux & AUC $\uparrow$ & \textbf{0.9947} & \textbf{0.9947} & 0.9938 & 0.9934 \\
+      mlsp-2013-birds                          & AUC $\uparrow$        & 0.9486 & 0.9274 & \textbf{0.9490} & 0.9363 \\
+      \bottomrule
+    \end{tabular}
+    }
+\end{table*}

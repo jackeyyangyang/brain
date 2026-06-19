@@ -1,0 +1,231 @@
+\documentclass[11pt,a4paper,logo]{googledeepmind}
+
+\setleftlogo[120pt]{imgs/logo-removebg-preview-Photoroom.jpg} 
+\setrightlogo[180pt]{imgs/logo_right.png}
+
+\usepackage[T1]{fontenc}
+\usepackage{pifont}
+\usepackage[
+    natbib=true,
+    backend=biber,
+    style=numeric, % Changed from 'alphabetic' to 'numeric' as per common technical report styles
+    sorting=none % To keep references in order of appearance or as defined in .bib
+]{biblatex}
+\addbibresource{main.bib} % You will need to create a main.bib file
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryBibitem{\clearfield{day}}
+\usepackage{csquotes}
+
+\newcommand{\sname}{MLEvolve\xspace}
+
+\title{\sname: A Self-Evolving Framework for Automated Machine Learning Algorithm Discovery}
+
+\correspondingauthor{
+% $\spadesuit$: Co-first Author \quad
+% $\diamondsuit$: Student Project Lead \quad
+$\clubsuit$: Please send correspondence regarding this report to yanxiangchao@pjlab.org.cn, zhangbo@pjlab.org.cn, and bailei@pjlab.org.cn
+}
+
+\author[1 2]{Shangheng Du}
+\author[1 $\clubsuit$]{Xiangchao Yan}
+\author[1 2]{Jinxin Shi}
+\author[1]{Zongsheng Cao}
+\author[1]{Shiyang Feng}
+\author[1]{Zichen Liang}
+\author[1]{Boyuan Sun}
+\author[1]{Tianshuo Peng}
+\author[1]{Yifan Zhou}
+\author[1]{Xin Li}
+\author[1 2]{Jie Zhou}
+\author[1 2]{Liang He}
+\author[1 $\clubsuit$]{Bo Zhang}
+\author[1 $\clubsuit$]{Lei Bai}
+
+\affil[1]{Shanghai Artificial Intelligence Laboratory}
+\affil[2]{East China Normal University}
+
+
+% \affil[3]{The University of Sydney}
+% \affil[4]{University of Science and Technology of China}
+% \affil[5]{Beihang University}
+% \affil[6]{Fudan University}
+% \affil[7]{Shanghai Jiao Tong University}
+% \affil[8]{University of Oxford}
+
+% General packages.
+\usepackage{pdflscape}
+
+\usepackage{textcomp}
+\usepackage{rotating}
+
+\usepackage{setspace}
+\usepackage{microtype} 
+
+\usepackage{soul} 
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{caption}
+
+\newcommand{\titledcaption}[2]{\caption[{#1}]{\textbf{#1}\\#2}}
+
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\sethlcolor{green!14}
+\newcommand{\mc}[2]{\makecell[t]{#1 \\ \scriptsize{(#2)}}}
+\newcommand{\mcb}[2]{\makecell[t]{{\bfseries #1} \\ \scriptsize{(#2)}}}
+\newcommand{\nan}{\makecell{--}}
+\usepackage{array}
+% \usepackage{threeparttable}
+\usepackage{multirow}
+
+% Math and units.
+\usepackage{amsmath}
+\usepackage{siunitx}
+
+% Formatting.
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{seqsplit}
+\usepackage{framed}
+
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{xcolor}
+% \usepackage{booktabs}
+\usepackage{soul}
+\usepackage{colortbl}  
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[most]{tcolorbox}
+% \usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\tcbuselibrary{listingsutf8}
+% \usepackage{multirow}
+\definecolor{mycolor}{RGB}{50,80,150}
+
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\floatpagefraction}{0.7}
+\usepackage{ragged2e}
+\usepackage[most]{tcolorbox}
+
+\usepackage{makecell}
+% \usepackage{tabularray}    
+% \usepackage{longtable}
+\usepackage{adjustbox}
+
+\usepackage[symbol]{footmisc}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}} 
+\newcommand{\maybe}{\textcolor{orange}{\textbf{?}}}
+\newcommand{\bad}[1]{\textcolor{red!70!black}{#1}}
+\newcommand{\good}[1]{\textcolor{teal!70!black}{#1}}
+\newcommand{\miss}[1]{\textcolor{red!70!black}{\emph{[missing: #1]}}}
+
+\newcommand{\Match}[1]{\textcolor{blue!70!black}{\textbf{#1}}}  
+\newcommand{\PMatch}[1]{\textcolor{orange!85!black}{#1}} 
+\newcommand{\BestPerf}[1]{\textbf{#1}}
+\newcommand{\SecBestPerf}[1]{\underline{#1}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex} % Add some space between paragraphs
+\newcolumntype{C}{>{\centering\arraybackslash}X} % 大写C=可伸缩X列，内容居中
+\usepackage{colortbl}
+\usepackage{xspace}
+\usepackage{pifont}
+\usepackage{bbding}
+\usepackage{multirow}
+\usepackage{booktabs,tabularx,xcolor}
+\usepackage{enumitem}
+\usepackage{ulem}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{wrapfig}
+\usepackage{booktabs,tabularx,array}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}  % 居中对齐的X
+\newcolumntype{Z}{>{\raggedleft\arraybackslash}X}  % 右对齐的X
+\usepackage{textcomp}
+\newcommand{\highlightChange}{\color{red}}
+\def\HC{\highlightChange}
+\newcommand{\Note}[1]{{\color{red} \bf \small [NOTE: #1]}}
+
+% ---- AlphaEvolve table colors & commands ----
+\definecolor{oursbg}{RGB}{226,243,226}
+\definecolor{ourshead}{RGB}{211,232,211}
+\definecolor{groupbg}{RGB}{241,241,241}
+\definecolor{summarybg}{RGB}{235,242,252}
+\definecolor{lightgraytext}{RGB}{125,125,125}
+\newcommand{\na}{\textcolor{lightgraytext}{--}}
+\newcommand{\best}[1]{\textbf{#1}}
+\newcommand{\second}[1]{\underline{#1}}
+\newcommand{\ourscell}[1]{\cellcolor{oursbg}#1}
+\newcommand{\oursheadcell}[1]{\cellcolor{ourshead}#1}
+\newcommand{\grouprow}[1]{\rowcolor{groupbg}\multicolumn{8}{l}{\textbf{#1}}\\}
+% References.
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue, % Changed for better visibility of links
+    citecolor=blue,  % Changed for better visibility of citations
+    filecolor=black,
+    urlcolor=blue    % Changed for better visibility of URLs
+}
+
+% Table of contents.
+\usepackage{tocloft}
+% Remove dots from the table of contents.
+\renewcommand{\cftdotsep}{\cftnodots}
+% This will preserve clickable links in the TOC
+\usepackage{etoolbox}
+\usepackage{arydshln}
+\usepackage{ulem} 
+\makeatletter
+\patchcmd{\@tocline}
+    {\hfil}
+    {\leaders\hbox{\hfil}\hfil}
+    {}{}
+\makeatother
+
+
+\begin{document}
+\sloppy
+
+
+\input{section/0_Abstract}
+\maketitle
+
+\input{section/1_Introduction}
+\input{section/2_Related_work}
+\input{section/3_Method}
+\input{section/4_Experiment}
+\input{section/5_Conclusion}
+
+
+
+\begingroup
+\sloppy
+\normalem
+\printbibliography[heading=bibintoc]
+\endgroup
+
+
+
+\clearpage
+\appendix
+% \section{Appendix}
+\input{section/Appendix}
+% \clearpage
+% \input{sections/X-appendix}
+% \input{arXiv/sections/appendix}
+
+\end{document}

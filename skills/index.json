@@ -1,0 +1,232 @@
+{
+  "skills": [
+    {
+      "name": "brainstorming",
+      "path": "coding/brainstorming/SKILL.md",
+      "tags": ["creative", "design"],
+      "description": "创意工作前的需求探索"
+    },
+    {
+      "name": "systematic-debugging",
+      "path": "coding/systematic-debugging/SKILL.md",
+      "tags": ["debug", "fix"],
+      "description": "系统化调试和问题定位"
+    },
+    {
+      "name": "test-driven-development",
+      "path": "coding/test-driven-development/SKILL.md",
+      "tags": ["testing", "tdd"],
+      "description": "测试驱动开发"
+    },
+    {
+      "name": "karpathy-guidelines",
+      "path": "coding/karpathy-guidelines/SKILL.md",
+      "tags": ["guidelines", "best-practices"],
+      "description": "Karpathy 编码行为指南"
+    },
+    {
+      "name": "code-deep-reader",
+      "path": "coding/code-deep-reader/SKILL.md",
+      "tags": ["reading", "analysis"],
+      "description": "核心函数精读"
+    },
+    {
+      "name": "codebase-reader",
+      "path": "coding/codebase-reader/SKILL.md",
+      "tags": ["reading", "architecture"],
+      "description": "代码库结构理解"
+    },
+    {
+      "name": "requesting-code-review",
+      "path": "coding/requesting-code-review/SKILL.md",
+      "tags": ["review"],
+      "description": "请求代码评审"
+    },
+    {
+      "name": "receiving-code-review",
+      "path": "coding/receiving-code-review/SKILL.md",
+      "tags": ["review"],
+      "description": "接收代码评审反馈"
+    },
+    {
+      "name": "graphify-power",
+      "path": "graphify/graphify-power/SKILL.md",
+      "tags": ["graph", "architecture"],
+      "description": "图谱驱动的代码库理解"
+    },
+    {
+      "name": "graphify-architecture",
+      "path": "graphify/graphify-architecture/SKILL.md",
+      "tags": ["graph", "architecture"],
+      "description": "图谱优先的架构分析"
+    },
+    {
+      "name": "graphify-impact",
+      "path": "graphify/graphify-impact/SKILL.md",
+      "tags": ["graph", "impact"],
+      "description": "改动影响面分析"
+    },
+    {
+      "name": "deep-research",
+      "path": "research/academic-research-skills/deep-research/SKILL.md",
+      "tags": ["research", "academic"],
+      "description": "深度学术研究"
+    },
+    {
+      "name": "academic-paper",
+      "path": "research/academic-research-skills/academic-paper/SKILL.md",
+      "tags": ["writing", "academic"],
+      "description": "学术论文写作"
+    },
+    {
+      "name": "academic-paper-reviewer",
+      "path": "research/academic-research-skills/academic-paper-reviewer/SKILL.md",
+      "tags": ["review", "academic"],
+      "description": "学术论文评审"
+    },
+    {
+      "name": "academic-pipeline",
+      "path": "research/academic-research-skills/academic-pipeline/SKILL.md",
+      "tags": ["research", "pipeline"],
+      "description": "完整学术研究流水线"
+    },
+    {
+      "name": "find-skills",
+      "path": "research/find-skills/SKILL.md",
+      "tags": ["skill", "discovery"],
+      "description": "发现和安装 skills"
+    },
+    {
+      "name": "read-arxiv-paper",
+      "path": "research/read-arxiv-paper/SKILL.md",
+      "tags": ["paper", "arxiv"],
+      "description": "读取 arxiv 论文"
+    },
+    {
+      "name": "literature-search-arxiv",
+      "path": "research/literature-search-arxiv/SKILL.md",
+      "tags": ["search", "paper"],
+      "description": "搜索 arxiv 论文"
+    },
+    {
+      "name": "research",
+      "path": "research/research-zh/research/SKILL.md",
+      "tags": ["research", "outline"],
+      "description": "初步调研生成 outline"
+    },
+    {
+      "name": "research-deep",
+      "path": "research/research-zh/research-deep/SKILL.md",
+      "tags": ["research", "deep"],
+      "description": "深度调研"
+    },
+    {
+      "name": "research-report",
+      "path": "research/research-zh/research-report/SKILL.md",
+      "tags": ["research", "report"],
+      "description": "调研报告生成"
+    },
+    {
+      "name": "writing-plans",
+      "path": "workflow/writing-plans/SKILL.md",
+      "tags": ["planning"],
+      "description": "编写实现计划"
+    },
+    {
+      "name": "executing-plans",
+      "path": "workflow/executing-plans/SKILL.md",
+      "tags": ["execution"],
+      "description": "执行实现计划"
+    },
+    {
+      "name": "subagent-driven-development",
+      "path": "workflow/subagent-driven-development/SKILL.md",
+      "tags": ["subagent", "parallel"],
+      "description": "子智能体驱动开发"
+    },
+    {
+      "name": "dispatching-parallel-agents",
+      "path": "workflow/dispatching-parallel-agents/SKILL.md",
+      "tags": ["subagent", "parallel"],
+      "description": "并行智能体分发"
+    },
+    {
+      "name": "finishing-a-development-branch",
+      "path": "workflow/finishing-a-development-branch/SKILL.md",
+      "tags": ["git", "branch"],
+      "description": "开发分支收尾"
+    },
+    {
+      "name": "commit-and-daily-log",
+      "path": "workflow/commit-and-daily-log/SKILL.md",
+      "tags": ["git", "log"],
+      "description": "Git 提交和日报"
+    },
+    {
+      "name": "weekly-report-from-daily-logs",
+      "path": "workflow/weekly-report-from-daily-logs/SKILL.md",
+      "tags": ["report", "weekly"],
+      "description": "周报生成"
+    },
+    {
+      "name": "skill-creator",
+      "path": "tools/skill-creator/SKILL.md",
+      "tags": ["skill", "creation"],
+      "description": "创建和测试 skills"
+    },
+    {
+      "name": "writing-skills",
+      "path": "tools/writing-skills/SKILL.md",
+      "tags": ["skill", "writing"],
+      "description": "编写 skills"
+    },
+    {
+      "name": "web-artifacts-builder",
+      "path": "tools/web-artifacts-builder/SKILL.md",
+      "tags": ["web", "artifact"],
+      "description": "构建 Web artifacts"
+    },
+    {
+      "name": "doc-coauthoring",
+      "path": "tools/doc-coauthoring/SKILL.md",
+      "tags": ["doc", "collaboration"],
+      "description": "协作文档撰写"
+    },
+    {
+      "name": "using-git-worktrees",
+      "path": "tools/using-git-worktrees/SKILL.md",
+      "tags": ["git", "worktree"],
+      "description": "Git worktree 使用"
+    },
+    {
+      "name": "using-superpowers",
+      "path": "tools/using-superpowers/SKILL.md",
+      "tags": ["skill", "usage"],
+      "description": "发现和使用 skills"
+    },
+    {
+      "name": "runtime-usage-keeper",
+      "path": "tools/runtime-usage-keeper/SKILL.md",
+      "tags": ["runtime", "docs"],
+      "description": "运行方法维护"
+    },
+    {
+      "name": "good-question",
+      "path": "tools/good-question/SKILL.md",
+      "tags": ["question", "research"],
+      "description": "研究问题优化"
+    },
+    {
+      "name": "paperjury",
+      "path": "tools/paperjury/SKILL.md",
+      "tags": ["paper", "review"],
+      "description": "CS 会议论文写作评审"
+    },
+    {
+      "name": "verification-before-completion",
+      "path": "tools/verification-before-completion/SKILL.md",
+      "tags": ["verification", "testing"],
+      "description": "完成前验证"
+    }
+  ]
+}

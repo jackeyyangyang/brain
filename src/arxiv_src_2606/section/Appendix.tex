@@ -1,0 +1,199 @@
+% !TEX root = ../MLEvolve.tex
+
+\newpage
+\section*{\centerline{Appendix}}
+\vspace{0.5em}
+
+\section{Agent Descriptions}
+\label{appen:agents}
+
+\sname is realized through a team of specialized agents, each tailored to a specific search phase or operator type. We summarize their roles:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Draft Agent.} Generates initial candidate solutions at the root node, which can retrieve model priors from the cold-start knowledge base (\S\ref{sec:kb}).
+  \item \textbf{Improve Agent.} Iteratively refines a runnable solution. It usually obtains structured guidance from the planner and applies controlled revisions through the Diff mode.
+  \item \textbf{Debug Agent.} This agent is triggered only when execution fails. It repairs faulty solutions based on error traces (\textit{e.g.}, missing dependencies, tensor shape mismatches), applying minimal modifications until the issue is fixed or the retry limit is reached.
+  \item \textbf{Evolution Agent.} Corresponds to intra-branch evolution by aggregating recent consecutive nodes along the same branch. It extracts experience from the past trajectory and uses it to propose targeted refinements for the current solution.
+  \item \textbf{Fusion Agent.} Performs cross-branch reference when a branch stagnates. It aggregates strong solutions from other branches as additional references, supplying reusable strategies for the current solution.
+  \item \textbf{Aggregation Agent.} Triggered by global stagnation, it aggregates top trajectories from multiple branches to create a new branch starting point.
+  \item \textbf{Code Review Agent.} After each code generation step, it reviews the generated code for naming or import errors, suspicious patterns, and metric consistency before execution.
+  \item \textbf{Data Leakage Agent.} Checks for potential leakage between training and evaluation splits to prevent overfitting to evaluation artifacts and avoid inflated scores.
+  \item \textbf{Result Parse Agent.} Parses execution logs to extract task-specific metrics, execution status, and key insights, and transfers structured information back into the search loop.
+\end{itemize}
+
+
+\section{Expansion Type Formulations}
+\label{appen:expansion}
+
+In \S\ref{sec:mcgs_exploration} we introduce a unified expansion rule
+\begin{equation*}
+v_{\text{new}} = g_{o}(v_{t}, R), \qquad (v_{t}, v_{\text{new}}) \in E_{T}, \;\; \{(r, v_{\text{new}}) \mid r \in R\} \subseteq E_{\text{ref}},
+\end{equation*}
+parametrized by the reference set $R$. This appendix gives the precise instantiation of $R$ for each of the four expansion types.
+
+\textbf{(1) Primary expansion} ($R = \varnothing$).
+The new node is generated solely from its parent, without referencing other nodes:
+\begin{equation}
+v_{\text{new}} = g_{o}(v_{t}, \varnothing), \qquad (v_{t}, v_{\text{new}}) \in E_{T}.
+\end{equation}
+This is the baseline expansion against which the graph-based variants extend, and corresponds to operators such as \textit{Draft}, \textit{Improve}, and \textit{Debug}.
+
+\textbf{(2) Intra-branch evolution} ($R = \mathcal{R}_{\text{hist}}(v_t, k)$).
+The reference set consists of the nearest $k$ ancestor nodes of $v_t$ within the same branch, forming a local trajectory:
+\begin{equation}
+v_{\text{new}} = g_{o}(v_{t}, \mathcal{R}_{\text{hist}}(v_{t}, k)), \qquad (v_{t}, v_{\text{new}}) \in E_{T}, \;\; \{(r, v_{\text{new}}) \mid r \in \mathcal{R}_{\text{hist}}(v_t, k)\} \subseteq E_{\text{ref}}.
+\end{equation}
+The primary edge preserves the parent--child relation, while the reference edges record information flow from intra-branch history. Selection and backpropagation are conducted exclusively along $E_T$.
+
+\textbf{(3) Cross-branch reference} ($R = \mathcal{R}_{\text{cross}}(N)$).
+When the current branch stagnates, the system constructs a reference set from the top-$N$ nodes selected across evaluated branches according to their performance:
+\begin{equation}
+v_{\text{new}} = g_{o}(v_{t}, \mathcal{R}_{\text{cross}}(N)), \qquad (v_{t}, v_{\text{new}}) \in E_{T}, \;\; \{(r, v_{\text{new}}) \mid r \in \mathcal{R}_{\text{cross}}(N)\} \subseteq E_{\text{ref}}.
+\end{equation}
+These reference edges allow the new node to reuse effective designs discovered in other branches, providing external guidance for improving the current solution.
+
+\textbf{(4) Multi-branch aggregation} ($R = \mathcal{R}_{\text{agg}}$).
+Triggered by global stagnation, this operator creates a new branch beneath the root $v_0$ by aggregating top trajectories from multiple branches. Let $\mathcal{T}^{\text{top}}_{b}$ denote the best-performing trajectories in branch $b \in \mathcal{B}$; then $\mathcal{R}_{\text{agg}} = \bigcup_{b \in \mathcal{B}} \mathcal{T}^{\text{top}}_{b}$, and the expansion is:
+\begin{equation}
+v_{\text{new}} = g_{o}(v_{0}, \mathcal{R}_{\text{agg}}), \qquad (v_{0}, v_{\text{new}}) \in E_{T}, \;\; \{(u, v_{\text{new}}) \mid u \in \mathcal{R}_{\text{agg}}\} \subseteq E_{\text{ref}}.
+\end{equation}
+Unlike incremental refinement along a single branch, aggregation pools information from multiple branches and opens an independent exploration trajectory.
+
+
+\section{MLE-Bench Benchmark and Evaluation Metrics}
+\label{appen:benchmark}
+
+\subsection{MLE-Bench}
+We evaluate \sname on MLE-Bench~\citep{mle-bench}, a benchmark introduced by OpenAI for assessing autonomous machine learning engineering. MLE-Bench comprises 75 carefully curated Kaggle competitions spanning natural language processing, computer vision, signal processing, and tabular data analysis. These competitions are selected from 586 candidates through manual screening by ML engineers, ensuring each task represents authentic and challenging ML engineering work. The dataset includes competitions of varying complexity: 22 low-complexity tasks (solvable by experienced engineers in under 2 hours), 38 medium-complexity tasks (2--10 hours), and 15 high-complexity tasks (over 10 hours), covering 15 distinct problem categories.
+
+Each competition includes the original problem description, datasets with reconstructed train-test splits, local grading code, and human baseline performance from Kaggle leaderboards. This setup enables direct comparison between AI agents and human competitors while maintaining evaluation integrity. The benchmark employs medal achievement rates as the primary metric, where agents must reach bronze, silver, or gold medal thresholds based on their performance relative to human participants. Agents must work autonomously within time constraints (24-hour time limit) to produce valid submission files.
+
+\subsection{Evaluation Metrics}
+\label{appen:eval}
+We use the following metrics to evaluate performance on MLE-Bench. All thresholds and percentile data are officially provided by Kaggle and MLE-Bench.
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Medal Rate (All, in \%)}: the percentage of tasks on which the submission earns a medal (gold, silver, or bronze). We additionally report the medal rate stratified by task complexity (Low / Medium / High).
+    \item \textbf{Gold Medal Rate (Gold, in \%)}: the percentage of tasks on which the submission earns a gold medal.
+    \item \textbf{Valid Submission Rate (Valid, in \%)}: the percentage of tasks that produce a valid submission passing format and correctness checks.
+    \item \textbf{Above Median Rate (Med+, in \%)}: the percentage of tasks on which the submission beats half of the human competitors.
+    \item \textbf{Beat Ratio (in \%)}: the average percentage of human competitors whose performance is surpassed by the agent's submission.
+\end{itemize}
+
+
+\section{Hyperparameters}
+\label{appen:hyper}
+
+Table~\ref{tab:hyper} lists the key hyperparameters used in all \sname experiments. Values are kept fixed across all 75 MLE-Bench tasks unless otherwise stated.
+
+\begin{table}[h]
+\centering
+\caption{Default hyperparameter configuration of \sname.}
+\label{tab:hyper}
+
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\footnotesize
+
+\begin{tabularx}{0.95\linewidth}{@{}lXr@{}}
+\toprule
+\textbf{Hyperparameter} & \textbf{Description} & \textbf{Default} \\
+\midrule
+
+\multicolumn{3}{@{}l}{\textit{General Search}}\\[-2pt]
+\arrayrulecolor{black!30}\cmidrule(lr){1-2}\arrayrulecolor{black}
+steps                      & Max search steps                                & 500 \\
+time\_limit                & Total time limit per task                        & 12\,h \\
+parallel\_search\_num      & Parallel branches                                & 3 \\
+initial\_drafts            & Initial drafts                                   & 3 \\
+max\_drafts                & Max branches from primary expansion               & 5 \\
+max\_fusion\_drafts        & Max additional branches from aggregation           & 2 \\
+temperature                & LLM decoding temperature                         & 1.0 \\
+
+\midrule
+\multicolumn{3}{@{}l}{\textit{Progressive MCGS}}\\[-2pt]
+\arrayrulecolor{black!30}\cmidrule(lr){1-2}\arrayrulecolor{black}
+exploration\_constant      & UCT exploration constant $c_0$                  & $\sqrt{2}$ \\
+lower\_bound               & UCT lower bound $c_{\min}$                      & 0.5 \\
+phase\_ratios              & UCT decay phase ratios                           & $(0.3, 0.7)$ \\
+explore\_switch\_start     & Soft-switch start time ratio                     & 0.5 \\
+explore\_switch\_end       & Soft-switch end time ratio                       & 0.7 \\
+min\_exploration\_weight   & Minimum exploration weight $w_{\min}$           & 0.2 \\
+elite\_topk                & Top-$K$ candidates in elite-guided exploitation  & 3 \\
+
+\midrule
+\multicolumn{3}{@{}l}{\textit{Stagnation Detection}}\\[-2pt]
+\arrayrulecolor{black!30}\cmidrule(lr){1-2}\arrayrulecolor{black}
+branch\_stagnation\_threshold  & Branch-level stagnation $\tau_{\text{branch}}$ & 3 \\
+topk\_stagnation\_threshold    & Global-level stagnation $\tau_{\text{global}}$ & 6 \\
+
+\midrule
+\multicolumn{3}{@{}l}{\textit{Retrospective Memory}}\\[-2pt]
+\arrayrulecolor{black!30}\cmidrule(lr){1-2}\arrayrulecolor{black}
+memory\_similarity\_threshold  & Retrieval similarity threshold           & 0.7 \\
+memory\_embedding\_model       & Sentence embedding model                 & BGE-base-en-v1.5 \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\section{Detailed Component Analysis}
+\label{appen:detailed_ablation}
+
+To complement the component-level ablation in \S\ref{sec:ablation}, we further isolate individual mechanisms within Progressive MCGS and Retrospective Memory on a 9-task subset of MLE-Bench, disabling one mechanism at a time while keeping all others unchanged.
+
+\input{table/fine_abl}
+
+Among the internal mechanisms of Progressive MCGS, removing intra-branch evolution causes the largest drop, reducing the medal rate from 66.67\% to 33.33\%. This indicates that reusing recent branch history is critical for preventing the agent from repeatedly making similar mistakes across iterations. Removing cross-branch reference and Elite-Guided exploitation leads to milder medal-rate decreases, but they affect different aspects of performance. Cross-branch reference provides external guidance from high-performing solutions discovered in other branches, helping the agent escape stagnant local trajectories. Elite-Guided exploitation mainly improves leaderboard ranking by further refining already competitive solutions toward higher-performing ones, as reflected by the lowest beat ratio after its removal.
+For the memory system, removing either the Knowledge Base or Global Memory reduces the medal rate to 44.44\%, showing that both sources of experience contribute to performance. However, removing Global Memory leads to a lower beat ratio than removing the Knowledge Base, suggesting that dynamically accumulated experience has a stronger impact on overall solution quality during long-horizon search. The Knowledge Base mainly provides task-relevant priors for cold-start initialization, while Global Memory continuously accumulates and reuses task-specific experience throughout the search process.
+
+
+\section{Detailed Results with Different LLMs}
+\label{appen:multi_model}
+
+To provide a detailed view of per-task performance across different LLM backbones, we report the scores of Gemini-3.1-Pro-preview, GPT-5.5, DeepSeek-v4-Pro, and Kimi-K2.6 on 8 representative MLE-Bench tasks covering Image, NLP, and Audio domains. As shown in Table~\ref{tab:multi_model_score}, each model has its own strengths across different tasks and domains, with no single model dominating all tasks. All four backbones produce competitive results under the same \sname pipeline, confirming that the framework is not tied to a specific LLM.
+
+\input{table/multi_model}
+
+
+\section{Case Study}
+\label{appen:case}
+
+We present representative cases illustrating the three graph-based expansion operators. Each case is drawn from an actual run on MLE-Bench.
+
+\subsection{Intra-branch Evolution}
+\label{appen:case_evo}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/case_evo.pdf}
+\caption{An intra-branch evolution case on the \texttt{aptos2019-blindness-detection} task.}
+\label{fig:case_evo}
+\end{figure}
+
+Figure~\ref{fig:case_evo} shows an intra-branch evolution case on the \texttt{aptos2019-blindness-detection} task. After six successive draft and improvement steps, the branch reaches a plateau where prior regularization attempts (EMA, Mixup, cross-validation) all failed to improve the score. The Evolution Agent reviews the local trajectory, identifies the bottleneck as architectural, and proposes fusing a DINOv3 backbone with a ResNet50. The coder implements the change via diff-mode edits.
+
+\subsection{Cross-branch Reference}
+\label{appen:case_ref}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/case_ref.pdf}
+\caption{A cross-branch reference case on the \texttt{mlsp-2013-birds} task.}
+\label{fig:case_ref}
+\end{figure}
+
+Figure~\ref{fig:case_ref} shows a cross-branch reference case on the \texttt{mlsp-2013-birds} task. When the current branch stagnates with a symmetric Focal Loss, the Fusion Agent identifies an alternative loss design (Asymmetric Loss) from a strong solution in another branch. The coder replaces \texttt{FocalLoss} with \texttt{AsymmetricLoss} via diff-mode edits.
+
+\subsection{Multi-branch Aggregation}
+\label{appen:case_agg}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/case_agg.pdf}
+\caption{A multi-branch aggregation case on the \texttt{mlsp-2013-birds} task.}
+\label{fig:case_agg}
+\end{figure}
+
+Figure~\ref{fig:case_agg} shows a multi-branch aggregation case on the same \texttt{mlsp-2013-birds} task. After global stagnation is detected, the Aggregation Agent synthesizes successful components from multiple branches (EfficientNet-B1 with GeM pooling, bandpass filter, Multi-Label Focal Loss, 5-fold cross-validation) into a new branch starting point.

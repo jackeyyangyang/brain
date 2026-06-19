@@ -1,0 +1,23 @@
+{
+  "skill_name": "weekly-report-from-daily-logs",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "根据这周的 daily logs，按上周四到本周四这个口径，帮我整理一份给 Mentor/Leader 的周报 txt，放到 daily_logs 里。",
+      "expected_output": "在 daily_logs 下生成一份中文周报 txt，包含本周完成、下周计划、汇报人和日期。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "请从 daily_logs 里汇总本周工作，输出一个周报模板，语气和我给的 Mentor/Leader 示例一致。",
+      "expected_output": "读取本周日报并生成符合固定模板口吻的周报文件。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "帮我基于 daily_logs 做本周总结，按 SceneGen Agent 模块开发周报格式写到 txt 文件里。",
+      "expected_output": "生成面向导师的周报 txt，内容只基于已有日报且表达精炼。",
+      "files": []
+    }
+  ]
+}

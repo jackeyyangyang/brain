@@ -1,0 +1,212 @@
+% !TEX root = ../MLEvolve.tex
+
+\section{\sname}
+\label{sec:method}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/mle-framework.pdf}
+\caption{\textbf{Framework of \sname.} The framework consists of three components. (i) Progressive MCGS extends MCTS with graph-based cross-branch information flow and a progressive exploration schedule. (ii) Retrospective Memory pairs a cold-start knowledge base with a dynamic global memory for experience accumulation and retrieval. (iii) Hierarchical Planning with Adaptive Code Generation decouples strategic planning from code implementation and selects among different coding modes according to the search state.}
+\label{fig:framework}
+\end{figure}
+
+% 从automl出发，引入我们提出的框架，粗略介绍
+In automated algorithm discovery, strong solutions often arise from careful design, accumulated experience, and reference to multiple candidate pathways, rather than from a single linear refinement. To this end, we introduce \textbf{\sname}, a self-evolving multi-agent framework for MLE tasks. As shown in Figure~\ref{fig:framework}, the design combines three key components:
+(1)~\textbf{Progressive MCGS} (\S\ref{sec:pmcgs}), which extends MCTS with graph-based cross-branch information sharing and a progressive exploration schedule to transition from broad exploration to focused exploitation;
+(2)~\textbf{Retrospective Memory} (\S\ref{sec:memory}), combining a static domain knowledge base for cold-start initialization with a dynamic global memory that automatically accumulates and retrieves historical experience during search;
+and (3)~\textbf{Hierarchical Planning with Adaptive Code Generation} (\S\ref{sec:codegen}), which separates strategic planning from code generation and selects different coding modes according to the current search state.
+
+
+% 多智能体的介绍可以先不加附录
+% These components are realized through a team of specialized agents (draft, improve, debug, evolution, fusion, aggregation, and code review), whose detailed roles are described in Appendix~\ref{appen:agents}. The search strategy adapts over time, accumulated experience informs later decisions, and the code generation mode shifts in response to the search state.
+
+
+\subsection{Problem Formulation}
+
+Our objective is to automate the search, design, and optimization of end-to-end ML pipelines. We formalize the task as identifying the optimal solution within a structured search space~\citep{aide}, where each node represents a complete candidate solution covering preprocessing, feature engineering, model training, and prediction.
+The goal is to find the optimal solution for a given task:
+\begin{equation}
+\label{eq:objective}
+s^{*} = \arg\max_{s \in \mathcal{S}} h(T, s),
+\end{equation}
+where $h(T,s)$ denotes the evaluation of candidate solution $s$ on task $T$, which may vary by task (\textit{e.g.}, accuracy, AUC, or loss). The solution space $\mathcal{S}$ is organized as a directed graph and explored through iterative search.
+
+
+
+
+\subsection{Progressive MCGS}
+\label{sec:pmcgs}
+
+The search strategies in existing MLE methods face limitations such as branch information isolation and overly fixed search behavior. Greedy and evolutionary algorithms are prone to becoming trapped in local optima, while tree-search-based methods often spend substantial resources exploring low-value branches under limited time budgets, leading to inefficient resource allocation in later stages.
+To address these limitations, we propose Progressive MCGS, which introduces a graph structure that enables cross-branch information sharing and a progressive exploration schedule that adaptively balances exploration and exploitation over time.
+
+
+\subsubsection{Graph-based Search Space}
+\label{sec:graph}
+
+To realize the optimization objective in Eq.~(\ref{eq:objective}), we organize the search process as a directed graph:
+\begin{equation}
+\label{eq:graph}
+G = (V, E), \quad E = E_{T} \cup E_{\text{ref}},
+\end{equation}
+where each node $v \in V$ maps to a candidate solution $s(v) \in \mathcal{S}$. Directed edges capture both generative and referential relationships:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Primary edges $E_{T}$}: $(u,v) \in E_{T}$ means that $v$ is derived from $u$ by applying an operator $o$, \textit{i.e.}, $v = g_{o}(u, R)$. These edges preserve the parent--child generative order and are used for selection and backpropagation.
+    \item \textbf{Reference edges} $E_{\text{ref}}$: $(r,v) \in E_{\text{ref}}$ denotes that $v$ additionally incorporates information from node $r$ beyond its parent node. These edges connect nodes across branches or non-adjacent levels, enabling cross-branch knowledge flow and compositional transfer, but do not participate in backpropagation. When $E_{\text{ref}}=\varnothing$, the search reduces to standard MCTS.
+\end{itemize}
+
+
+
+
+\subsubsection{Progressive MCGS-based Exploration}
+\label{sec:mcgs_exploration}
+
+The MCGS process follows the classical MCTS loop of selection, expansion, simulation, and backpropagation, with a progressive exploration schedule in the selection phase and graph-based expansion types.
+
+\textbf{Selection with Progressive Exploration Scheduling.}
+\label{sec:entropy}
+Although the overall search space is formulated as a graph, the selection stage operates solely on the tree backbone formed by the primary edges $E_T$. At each iteration, the selection policy traverses $E_T$ in a top-down manner to identify a node $v_t$ for expansion using the UCT criterion:
+\begin{equation}
+\pi_{\text{sel}}(v) = \arg\max_{i \in \mathcal{C}(v)} \text{UCT}(i),
+\quad \text{where } \text{UCT}(i) = Q_i + c(t) \sqrt{\frac{\ln (N_v + 1)}{N_i + \varepsilon}},
+\end{equation}
+where $Q_i$ denotes the average reward of child node $i$, $N_i$ is its visit count, $N_v$ is the visit count of the parent, and $\varepsilon > 0$ is a smoothing constant. The exploration constant $c(t)$ is gradually reduced over time following a piecewise schedule ($c_0 \rightarrow c_{\min}$).
+
+Inspired by entropy-based exploration principles~\citep{jaynes1957information}, we introduce an entropy-inspired progressive exploration schedule that transitions the search from broad exploration toward focused exploitation. Within a local time window, the branch selection frequencies form an empirical distribution $\pi_t$, whose Shannon entropy $H(\pi_t) = -\sum_i \pi_t(i)\log \pi_t(i)$ quantifies the dispersion of search effort. The core mechanism is a probabilistic soft switch between UCT-based exploration (higher entropy) and Elite-Guided exploitation (lower entropy). At each step, the system chooses between these strategies according to a time-dependent weight:
+\begin{equation}
+\label{eq:soft_switch}
+P(S_t = \text{UCT}) = w(t), \qquad
+P(S_t = \text{Elite}) = 1 - w(t),
+\end{equation}
+where $S_t$ denotes the selection strategy at step $t$, $w(t)$ gradually decreases from $1.0$ to a minimum threshold $w_{\min}$ as search time progresses. The schedule $w(t)$ is designed so that the empirical branch-selection entropy $H(\pi_t)$ progressively decreases over time, concentrating computation on promising branches. In the \textbf{Elite-Guided exploitation} mode, the system bypasses local tree traversal and selects from an elite set of top-$K$ globally best-performing nodes, weighted by inverse rank:
+\begin{equation}
+\label{eq:elite}
+P(v_i \mid \text{elite set}) =
+\frac{1/\text{rank}(v_i)}
+{\sum_{j=1}^{K} 1/\text{rank}(v_j)},
+\end{equation}
+where $\text{rank}(v_i)$ is the position of node $v_i$ when all valid nodes are sorted by metric. This allows the search to directly exploit high-value nodes regardless of their position in the graph, while the probabilistic transition retains exploration capacity even in later stages.
+
+
+\textbf{Expansion.}
+To incorporate information flow and compositional reuse into the search process, we extend the standard MCTS expansion with graph-based operations. All expansion types are unified under a single formulation:
+\begin{equation}
+\label{eq:expansion}
+v_{\text{new}} = g_{o}(v_{t}, R), \qquad (v_{t}, v_{\text{new}}) \in E_{T}, \;\; \{(r, v_{\text{new}}) \mid r \in R\} \subseteq E_{\text{ref}},
+\end{equation}
+where $R$ denotes the reference set. We instantiate this formulation with four expansion types (formal definitions in Appendix~\ref{appen:expansion}):
+
+\textbf{(1) Primary expansion} ($R = \varnothing$).
+The new node is generated solely from its parent without referencing other nodes. This constitutes the baseline expansion against which the graph-based variants extend.
+% Typical operators include \textit{Draft}, \textit{Improve}, and \textit{Debug}.
+
+\textbf{(2) Intra-branch evolution} ($R = \mathcal{R}_{\text{hist}}(v_t, k)$).
+Inspired by human problem-solving strategies, this mode emphasizes reflecting on past attempts instead of blind trial and error. The agent takes the nearest $k$ nodes within the same branch to form a local trajectory as the reference set, reviewing which changes improved outcomes or caused failures. Through self-reflection, the agent reinforces effective patterns while avoiding repeated mistakes.
+
+\textbf{(3) Cross-branch reference} ($R = \mathcal{R}_{\text{cross}}(N)$).
+In ML competitions, contestants often draw inspiration from community-shared solutions when progress stalls. Similarly, when a branch shows signs of stagnation, MCGS selects the top-$N$ nodes across all evaluated branches as references, enabling the agent to draw on strong solutions discovered in other branches.
+
+\textbf{(4) Multi-branch aggregation} ($R = \mathcal{R}_{\text{agg}}$).
+For complex tasks, progress often requires synthesizing complementary insights from multiple strong solutions. This resembles a form of collective intelligence: trajectories from different branches are merged and fragments of useful insights are combined to spark novel directions. A new branch root is created beneath $v_0$, serving as a fresh starting point. Representative cases are provided in Appendix~\ref{appen:case}.
+
+
+\textbf{Simulation.}
+After generating a candidate $v_{\text{new}}$, its code is executed in an interpreter. The execution outputs are parsed to extract the task-specific metric and execution logs. An immediate reward $R(v)$ is designed to reflect execution validity and performance contribution:
+\begin{equation}
+\label{eq:reward}
+R(v) =
+\begin{cases}
+-1, & \text{if execution fails or no valid metric is obtained} \\
+1,  & \text{if execution succeeds but does not improve the branch best} \\
+2,  & \text{if execution succeeds and refreshes the branch best metric}.
+\end{cases}
+\end{equation}
+This structure distinguishes failed runs, feasible but non-improving attempts, and actual improvements, yielding stable credit assignment during MCGS.
+
+
+\textbf{Backpropagation.}
+After simulation, the reward $R(v)$ is propagated to the root only along primary edges $E_T$. Reference edges $E_{\text{ref}}$ are excluded because they represent auxiliary information reuse rather than parent--child generation, and therefore should not participate in credit assignment. For each ancestor node $u$ on the primary path, we update its visit count $N_u$ and cumulative reward $W_u$:
+\begin{equation}
+N_u \leftarrow N_u + 1,\qquad W_u \leftarrow W_u + R(v),
+\end{equation}
+and compute the average value estimate:
+\begin{equation}
+\label{eq:backprop}
+Q_u = W_u / (N_u + \varepsilon).
+\end{equation}
+
+
+\textbf{Multi-Level Stagnation Detection.}
+\label{sec:stagnation}
+While the soft-switch schedule governs the global exploration-exploitation transition, the graph-based operators introduced above are triggered by explicit stagnation conditions to prevent branches from falling into unproductive loops:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Branch-level stagnation}: triggered when a branch produces $\tau_{\text{branch}}$ consecutive expansions without improving its best metric. The system first attempts intra-branch evolution; in later stages when other branches have accumulated strong solutions, cross-branch reference is further activated to incorporate external knowledge.
+    \item \textbf{Global-level stagnation}: triggered when the global best metric has not improved for $\tau_{\text{global}}$ steps, activating multi-branch aggregation.
+\end{itemize}
+
+
+\subsection{Retrospective Memory}
+\label{sec:memory}
+
+To enable experience accumulation during search, we introduce a retrospective memory that retrieves relevant historical experience before each planning decision, transforming the search into experience-driven decision-making. The memory comprises a static domain knowledge base for cold-start initialization and a dynamic global memory for runtime experience accumulation.
+
+\subsubsection{Domain Knowledge Base}
+\label{sec:kb}
+
+Effective ML solution design typically relies on domain priors and hands-on experience. LLM internal knowledge alone is often insufficient for specialized tasks, leading to a high rate of cold-start errors. To mitigate this, we curate a lightweight domain knowledge base of candidate models, organized by task type. For different task types (\textit{e.g.}, image classification, natural language processing, tabular regression), the knowledge base provides suitable models together with concise usage guidelines, synthesized from open-source repositories and competition platforms. Given a task $T$, the system retrieves relevant entries $R_{KB}(T)$ by matching the task description against domain keywords, treated as an optional signal during initial solution generation:
+\begin{equation}
+\label{eq:kb_init}
+s_{\text{init}} = \mathrm{Init}(T, R_{KB}(T)),
+\end{equation}
+where $\mathrm{Init}(\cdot)$ denotes the initialization procedure that generates the first plan and code.
+
+
+\subsubsection{Dynamic Global Memory}
+\label{sec:global_memory}
+
+During search, the global memory accumulates structured records after each valid node execution including the plan, outcome, analysis, and feedback signal.
+
+\textbf{Hybrid retrieval.} Records are retrieved via a combination of lexical keyword matching and FAISS~\citep{johnson2019faiss}-based semantic search, fused through Reciprocal Rank Fusion (RRF):
+\begin{equation}
+\label{eq:rrf}
+\text{score}(d) =
+\alpha \cdot \frac{1}{k + r_{\text{lex}}(d)}
++ (1 - \alpha) \cdot \frac{1}{k + r_{\text{vec}}(d)},
+\end{equation}
+where $r_{\text{lex}}(d)$ and $r_{\text{vec}}(d)$ denote the ranks of record $d$ in the lexical and vector retrieval results, respectively; $k$ is a smoothing constant; and $\alpha$ balances the two signals.
+
+\textbf{Stage-aware retrieval.}
+Agents retrieve memory records with stage-specific queries and filters:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Planning stage}: After generating an initial free-text plan, the agent uses it as a query to retrieve relevant successful and failed experiences. These records guide the refinement of the plan into a structured module-level specification, helping the agent reuse effective strategies while avoiding previously unsuccessful directions.
+    
+    \item \textbf{Debugging stage}: When encountering an execution error, the agent uses the error message as a query to retrieve similar resolved errors from memory, providing helpful debug strategies.
+\end{itemize}
+
+% This design realizes experience accumulation without requiring additional LLM calls for reflection or summarization. The graph structure (\S\ref{sec:graph}) provides code-level cross-branch reuse through reference edges, while the global memory provides lesson-level experience retrieval, forming a complementary channel at a coarser granularity.
+
+\subsection{Hierarchical Planning and Adaptive Code Generation}
+\label{sec:codegen}
+
+To address the lack of hierarchical control in one-shot code generation, we introduce a hierarchical generation pipeline that decouples strategic planning from code implementation and adaptively selects among different code generation modes according to the current search state.
+
+\subsubsection{Planner-Coder Decoupling}
+
+We decouple strategic planning from code generation to separate global reasoning from local implementation. The planner operates at the module level, using execution feedback, branch trajectories, and retrieved memory to decide \textbf{what} to modify and \textbf{why}. The coder then implements the planned changes at the code level, focusing on \textbf{how} to realize the modification while preserving the existing code structure and working functions.
+
+
+\subsubsection{Adaptive Code Generation Modes}
+
+Rather than applying a single code generation mode, the coder applies three coding modes with different granularity, selected according to the current search state and task requirements:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Base mode}: Full code generation from scratch. This mode constructs a complete solution when no reliable solution is available, especially during initial drafting.
+
+    \item \textbf{Stepwise mode}: Module-by-module generation following the planner's specification. This mode is used for complex tasks that require multi-stage pipelines, where decomposing the solution into modules helps reduce generation difficulty.
+
+    \item \textbf{Diff mode}: Targeted diff edits on the existing code. When a working solution already exists, this mode enables localized refinements with more stable and controlled modifications.
+\end{itemize}
+
+The framework is realized through a team of specialized agents, each tailored to a specific search phase or operator type. Detailed agent descriptions are provided in Appendix~\ref{appen:agents}.

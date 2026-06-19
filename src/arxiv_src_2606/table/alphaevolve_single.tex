@@ -1,0 +1,46 @@
+% AlphaEvolve comparison table
+\begin{table}[t]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.16}
+\setlength{\tabcolsep}{3.8pt}
+\caption{Comparison on \textbf{15 mathematical programming tasks} grouped by problem type. $\uparrow$ / $\downarrow$ means higher/lower is better. Values are displayed with task-dependent precision. Best results are in \textbf{bold}; second best is \underline{underlined}. ``--'' indicates the result is not reported.}
+\label{tab:alphaevolve}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{p{5.2cm} c r r r r r >{\columncolor{oursbg}\raggedleft\arraybackslash}r}
+\toprule
+\multicolumn{1}{>{\columncolor{groupbg}}l}{\textbf{Problem}} &
+\multicolumn{1}{>{\columncolor{groupbg}}c}{$\uparrow\!/\!\downarrow$} &
+\multicolumn{1}{>{\columncolor{groupbg}}r}{\textbf{AlphaEvolve}} &
+\multicolumn{1}{>{\columncolor{groupbg}}r}{\textbf{AlphaEvolve-v2}} &
+\multicolumn{1}{>{\columncolor{groupbg}}r}{\textbf{SimpleTES}} &
+\multicolumn{1}{>{\columncolor{groupbg}}r}{\textbf{TTT-Discover}} &
+\multicolumn{1}{>{\columncolor{groupbg}}r}{\textbf{OpenEvolve}} &
+\multicolumn{1}{>{\columncolor{ourshead}}c}{\textbf{\sname}} \\
+\midrule
+\grouprow{Geometric packing / regions}
+Packing hexagons in hexagons & $\downarrow$ & \second{3.930092} & 3.931 & 3.931 & \na & \na & \ourscell{\best{3.9284759302}} \\
+Circle packing in a square & $\uparrow$ & 2.6358627564 & \na & \second{2.635983} & \na & \na & \ourscell{\best{2.6359830395}} \\
+Circle packing in a rectangle & $\uparrow$ & \second{2.3658321334} & \na & \na & \na & \na & \ourscell{\best{2.3658323759}} \\
+Heilbronn convex regions & $\uparrow$ & \second{0.0309368890} & 0.0309 & \na & \na & \na & \ourscell{\best{0.0309372079}} \\
+Heilbronn triangles & $\uparrow$ & \second{0.03652988988003016} & 0.0365 & \na & \na & \na & \ourscell{\best{0.03652988988003020}} \\
+Kissing number dimension 11 & $\uparrow$ & \best{593} & \best{593} & \na & \na & \na & \ourscell{592} \\
+\midrule
+\grouprow{Additive combinatorics}
+Sums differences problems 1 & $\uparrow$ & \second{1.1479889651} & 1.1479 & 1.143975 & \na & \na & \ourscell{\best{1.1901774219}} \\
+Sums and differences problems 2 & $\uparrow$ & \second{1.1584172816} & 1.1584 & \na & \na & \na & \ourscell{\best{1.1585457700}} \\
+\midrule
+\grouprow{Autocorrelation / inequalities}
+An uncertainty inequality & $\downarrow$ & \second{0.3520991044225} & 0.3521 & \na & \na & \na & \ourscell{\best{0.3520991044160}} \\
+First autocorrelation inequality & $\downarrow$ & 1.5052939684 & 1.5032 & 1.503871 & \second{1.5028628983} & 1.507190 & \ourscell{\best{1.5028628749}} \\
+Third autocorrelation inequality variant & $\downarrow$ & \second{1.4687620697} & \na & \na & \na & \na & \ourscell{\best{1.4587698922}} \\
+Third autocorrelation inequality & $\downarrow$ & 1.4556427954 & 1.4557 & \best{1.453675} & \na & 1.460000 & \ourscell{\second{1.4548507482}} \\
+Second autocorrelation inequality & $\uparrow$ & 0.8962799442 & \second{0.961} & \best{0.962694} & 0.959100 & 0.944900 & \ourscell{0.9054217971} \\
+\midrule
+\grouprow{Ratio / overlap optimization}
+Max-to-min ratios & $\downarrow$ & 12.88926611203 & \second{12.889266112} & \na & \na & \na & \ourscell{\best{12.8892299077}} \\
+Minimum Overlap Problem & $\downarrow$ & 0.3809230351 & 0.380924 & \best{0.380868} & \second{0.3808753232} & 0.380965 & \ourscell{0.3808968496} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

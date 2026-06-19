@@ -1,0 +1,75 @@
+% !TEX root = ../MLEvolve.tex
+
+\section{Experiments}
+\label{sec:experiments}
+
+
+\subsection{Experiment Setup}
+\label{sec:setup}
+
+\textbf{Benchmarks.} We evaluate \sname on two benchmarks. The primary benchmark is MLE-Bench~\citep{mle-bench}, introduced by OpenAI for end-to-end machine learning engineering, comprising 75 Kaggle tasks across three complexity levels (low, medium, and high), with full details and evaluation metrics in Appendix~\ref{appen:benchmark}. To assess cross-domain generalization, we also use 15 open-ended mathematical optimization tasks from AlphaEvolve~\citep{novikov2025alphaevolve}.
+
+\textbf{Implementation details.} We adopt Gemini-3.1-Pro-preview as the backbone LLM for all agents, with temperature set to 1.0. Each task is assigned a maximum of 500 expansion steps and a 12-hour runtime, executed on 21 vCPUs, 234\,GB of RAM, and a single NVIDIA H200 GPU. Full hyperparameter settings are listed in Appendix~\ref{appen:hyper}.
+
+\textbf{Baselines.} We compare \sname with a series of MLE agents, including both proprietary and open-source agent frameworks. The proprietary methods include FM-Agent~\citep{li2025fm}, MLE-STAR-Pro-1.5~\citep{mle-star}, MARS~\citep{chen2026mars}, MARS+~\citep{chen2026mars}, and AIBuildAI~\citep{zhang2026aibuildai}. The open-source methods include AIDE~\citep{aide}, R\&D-Agent~\citep{rdagent}, ML-Master~\citep{ml-master}, AIRA-Dojo~\citep{dojo}, Leeroo~\citep{nadafian2026kapso}, and ML-Master 2.0~\citep{zhu2026mlmaster2}. The baseline results in Table~\ref{tab:main_res} are taken from the MLE-Bench leaderboard or the corresponding papers.
+
+\subsection{Main Results}
+\label{sec:main_results}
+
+\input{table/main_result}
+
+\noindent\textbf{\sname achieves state-of-the-art performance on MLE-Bench.} As shown in Table~\ref{tab:main_res}, under a 12-hour budget, \sname attains an average medal rate of \textbf{65.3\%} and a gold medal rate of \textbf{34.7\%}, achieving the best overall performance among all compared MLE agents. The results are consistent across difficulty levels, with medal rates of 80.3\%, 64.0\%, and 46.7\% on low, medium, and high complexity tasks, respectively. In addition, \sname achieves a 100\% valid submission rate and a 76.0\% above-median rate, meaning that its submissions surpass the human median Kaggle score in more than three quarters of the tasks. \sname outperforms both open-source and proprietary baselines at half the standard 24-hour budget.
+
+\input{table/alphaevolve_single}
+
+\noindent\textbf{\sname generalizes to mathematical algorithm optimization.} To further evaluate the generalization ability of \sname in self-evolving optimization scenarios, we apply it to the 15 mathematical optimization tasks from AlphaEvolve. These tasks differ from end-to-end MLE pipelines, but share a similar iterative optimization structure: the agent repeatedly proposes candidate solutions, evaluates their quality, and refines them through continued search.
+As shown in Table~\ref{tab:alphaevolve}, \sname achieves the best result on \textbf{11 of 15} tasks when compared with specialized algorithmic discovery methods, including AlphaEvolve~\citep{novikov2025alphaevolve}, AlphaEvolve-v2~\citep{alphaevolve_v2}, SimpleTES~\citep{simpleTes}, TTT-Discover~\citep{ttt-discover}, and OpenEvolve~\citep{openevolve}. These results suggest that our self-evolving mechanism is not limited to the MLE domain, but can generalize to broader algorithmic optimization problems that require iterative optimization.
+
+
+\subsection{Ablation Study}
+\label{sec:ablation}
+
+\input{table/ablation}
+
+To evaluate the effectiveness of proposed components, we conduct ablation experiments on MLE-Bench Lite (22 tasks) by removing one component at a time while keeping all others unchanged.
+As shown in Table~\ref{tab:ablation}, removing any single component leads to a clear performance decline, indicating that all three components help alleviate the existing limitations. Specifically, removing Progressive MCGS causes the largest drop in both medal rate and beat ratio. Without this module, the search reverts to standard tree-based MCTS with a fixed strategy that wastes resources on low-value branches in later stages. Removing Retrospective Memory also leads to a 13.64\% drop in medal rate. In this setting, the agent can still occasionally discover strong solutions through search alone, but it lacks experience feedback and guidance in long-horizon tasks. Replacing adaptive code generation with one-shot generation similarly reduces overall performance, since the absence of planner-coder decoupling and diff-based editing weakens the stability of iterative code refinement.
+We further analyze the individual mechanisms within Progressive MCGS and Retrospective Memory in Appendix~\ref{appen:detailed_ablation}. The results show that intra-branch evolution is the most critical factor within Progressive MCGS, while Elite-Guided exploitation mainly improves leaderboard ranking by further refining already competitive solutions toward higher-performing ones.
+
+\subsection{Further Analysis}
+\label{sec:analysis}
+
+\subsubsection{Progressive Search Entropy Dynamics}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\linewidth]{figures/entropy_paper.pdf}
+\caption{Effective branch count $\exp(H(\pi_t))$ over search progress. \sname progressively reduces from 4.8 to 2.8, empirically validating the soft-switch schedule (Eq.~(\ref{eq:soft_switch})). Vanilla MCTS with a fixed exploration constant remains near 4.3 throughout.}
+\label{fig:entropy}
+\end{figure}
+
+To empirically validate the progressive transition from exploration to exploitation described in \S\ref{sec:entropy}, we measure the effective number of active branches during search. Specifically, within a sliding window at search progress $t$, we compute the empirical distribution $\pi_t$ of branches selected for solution iteration, and use $\exp(H(\pi_t))$ to quantify the number of branches over which search effort is effectively distributed, where $H(\pi_t)$ is the Shannon entropy of $\pi_t$. 
+As shown in Figure~\ref{fig:entropy}, \sname gradually reduces the effective number of active branches from 4.8 in the early exploration stage to 2.8 in the later exploitation stage, indicating that the soft switch schedule progressively concentrates computation on more promising candidates. In contrast, Vanilla MCTS remains almost uniform throughout, continuing to spread resources across branches even after promising directions emerge. The observed entropy trend is consistent with the scheduling behavior in Eq.~(\ref{eq:soft_switch}), showing the effectiveness of the progressive exploration schedule and Elite-Guided exploitation.
+
+\subsubsection{Performance with Different LLMs}
+\label{sec:multi_model}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\linewidth]{figures/multi_model_comparison.pdf}
+\caption{Performance of \sname across different backbone LLMs on representative tasks covering Image, NLP, and Audio domains. Beat ratios are reported per domain, with full per-task scores provided in Appendix.}
+\label{fig:multi_model}
+\end{figure}
+
+We further evaluate \sname with four LLM backbones, including Gemini-3.1-Pro-preview, GPT-5.5, DeepSeek-v4-Pro, and Kimi-K2.6, on representative MLE-Bench tasks covering Image, NLP, and Audio domains. As shown in Figure~\ref{fig:multi_model}, the four backbones exhibit clearly different domain strengths. For example, GPT-5.5 reaches the highest beat ratio on NLP tasks with 96.2\%, while Kimi-K2.6 leads on the evaluated Audio tasks with 99.2\%. Despite these per-domain differences, all four LLMs achieve competitive results under the same \sname pipeline, suggesting that the framework is not tightly coupled to a specific LLM backbone. These results show that \sname remains effective across different backbone LLMs and task domains. Full per-task scores are provided in Appendix~\ref{appen:multi_model}.
+
+
+\subsubsection{Performance Over Time}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/convergence_beat_ratio.pdf}
+\caption{Beat ratio over the 12-hour search budget on representative tasks. \sname converges faster and continues improving in late stages, whereas the baseline plateaus early.}
+\label{fig:convergence}
+\end{figure}
+
+To examine how performance evolves during the search, Figure~\ref{fig:convergence} reports the beat ratio (the percentage of human Kaggle participants outperformed by the current best submission) as a function of elapsed time. \sname improves rapidly in the early stage and continues to make gains throughout the middle and late stages, reaching a final beat ratio of 98.2\% on the representative tasks. In contrast, Vanilla MCTS plateaus much earlier, ending at $\sim$70\% and struggling to further refine solutions once the early promising directions have been explored. This trend indicates that \sname can sustain improvement over a longer search horizon, supporting the effectiveness of the self-evolving design.
