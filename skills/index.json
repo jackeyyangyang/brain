@@ -157,6 +157,12 @@
       "description": "开发分支收尾"
     },
     {
+      "name": "workflow-commit-brain",
+      "path": "workflow/workflow-commit-brain/SKILL.md",
+      "tags": ["workflow", "commit"],
+      "description": "简化版 commit，自动执行提交"
+    },
+    {
       "name": "commit-and-daily-log",
       "path": "workflow/commit-and-daily-log/SKILL.md",
       "tags": ["git", "log"],
@@ -221,6 +227,12 @@
       "path": "tools/paperjury/SKILL.md",
       "tags": ["paper", "review"],
       "description": "CS 会议论文写作评审"
+    },
+    {
+      "name": "code-learn",
+      "path": "coding/code-learn/SKILL.md",
+      "tags": ["learning", "digest"],
+      "description": "消化代码变更，提炼知识点"
     },
     {
       "name": "verification-before-completion",

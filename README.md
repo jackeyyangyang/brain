@@ -1,29 +1,38 @@
-# brain
+# Brain
 
-my brain, skills, papers and so on
-
-## 目录结构
-
-```
-brain/
-├── skills/          # AI Agent skills
-├── papers/          # 论文阅读笔记
-└── src/             # 源码
-```
+Agent 的记忆库，存放 skills 和学习沉淀。
 
 ## Skills
 
-详细列表见 `skills/index.json`。
+放在 `brain/skills/` 下（实际路径）。
 
-## Papers
+### 创建新 Skill
 
-- `summary_gepa.md` — GEPA: Reflective Prompt Evolution
-- `summary_mlevolve.md` — MLEvolve: LLM 自演化
-- `summary_skillopt.md` — Skill Optimization
-- `summary_mmskills.md` — Multimodal Skills
-- `summary_opengame.md` — OpenGame
+```bash
+mkdir -p brain/skills/<category>/<skill-name>
+# 创建 SKILL.md
+# 注册到 brain/skills/index.json
+```
 
-## 维护
+### 示例：创建 code-learn
 
-- 添加新 skill：在对应分类目录下创建文件夹，放入 `SKILL.md`
-- 更新索引：运行 `skills/index.json` 自动生成脚本
+```bash
+mkdir -p brain/skills/coding/code-learn
+# 写 SKILL.md
+# 注册到 index.json
+```
+
+### Skill 触发词
+
+| Skill | 触发词 |
+|-------|--------|
+| workflow-commit-brain | `/commit`、`帮我提交` |
+| code-learn | `/code-learn`、`消化这段修改` |
+
+## Learnings
+
+`brain/learnings/` - 代码修改的学习沉淀，按日期存储。
+
+## 软连接说明
+
+`brain/skills/` 是实际目录，直接创建/编辑即可。
