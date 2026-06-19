@@ -1,0 +1,30 @@
+---
+description: prefer graphify-power skill for codebase analysis
+alwaysApply: true
+---
+
+当用户的问题属于以下类型时，优先读取并遵循 `/.cursor/skills/graphify-power/SKILL.md`：
+
+- 代码库架构理解
+- 模块/类/函数关系分析
+- 调用链、数据流、依赖路径追踪
+- 改动影响面评估
+- 用户明确表示“尽量用 graphify”或“最大化利用 graphify”
+
+执行原则：
+
+1. **先 graphify，后源码**
+2. 优先考虑：
+   - `graphify query "<question>"`
+   - `graphify path "<A>" "<B>"`
+   - `graphify explain "<concept>"`
+   - `graphify affected "<node>"`
+3. 只有 graphify 上下文不够时，才读取少量相关源码
+4. 如果本次会话修改了代码，结束前运行 `graphify update .`
+5. 若得到高质量、可复用结论，可考虑 `graphify save-result`
+
+避免：
+
+- 一开始就大范围读源码
+- 在可用 graphify 回答的问题上直接跳过图谱
+- 未做范围收缩就进行全局搜索

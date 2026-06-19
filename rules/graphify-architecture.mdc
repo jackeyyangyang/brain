@@ -1,0 +1,21 @@
+---
+description: prefer graphify-architecture for codebase understanding
+alwaysApply: true
+---
+
+当用户的问题更偏向以下场景时，优先读取并遵循 `/.cursor/skills/graphify-architecture/SKILL.md`：
+
+- 代码库架构理解
+- 模块职责梳理
+- 调用链、数据流、依赖路径追踪
+- 某个模块、类、函数在系统中的位置和作用
+- 用户明确表示想先用 graphify 做代码阅读导航
+
+执行原则：
+
+1. **先 graphify，后源码**
+2. 宽问题优先 `graphify query "<question>"`
+3. 双点关系优先 `graphify path "<A>" "<B>"`
+4. 单点解释优先 `graphify explain "<concept>"`
+5. 只有 graphify 不够时，才读取少量相关源码
+6. 如果本次会话修改了代码，结束前运行 `graphify update .`

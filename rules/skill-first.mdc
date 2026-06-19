@@ -1,0 +1,53 @@
+---
+description: 始终优先使用 find-skills 查找并安装可复用的 skill，再决定自行实现
+alwaysApply: true
+---
+
+# Skill 优先
+
+## 核心原则
+
+**凡是用户希望"做某件事"或"扩展能力"，先看有没有现成 skill。**
+
+不要重复造轮子。`find-skills` skill 已经安装在本仓库，用于发现和安装社区 skills。
+
+---
+
+## 触发场景
+
+以下意图出现时，**必须**先调用 `find-skills` skill：
+
+- 用户说"帮我做 X"、"怎么实现 X"、"有没有工具可以..."
+- 用户要求"安装某个 skill"、"找一个 skill"
+- 用户想扩展 agent 能力（设计、测试、部署、调研、文档等）
+- 用户希望降低重复劳动、复用现成工作流
+
+---
+
+## 执行步骤
+
+```
+1. 加载 find-skills skill
+2. 搜索匹配 skill
+3. 询问用户是否安装（npx skills add ...）
+4. 安装完成后再回到用户原任务
+```
+
+---
+
+## 反模式
+
+- ❌ 直接开始写实现，未先查 skill
+- ❌ 用户问"有没有..."时凭印象回答"没有"
+- ❌ 自行创建 skill 前未搜索现有方案
+
+---
+
+## 安装命令模板
+
+```bash
+export NPM_CONFIG_PREFIX=/tmp/npm-prefix && mkdir -p $NPM_CONFIG_PREFIX/lib
+npx -y -p skills@latest skills add <github-url> --skill <skill-name>
+```
+
+注意：当前环境 npm 默认 prefix 指向不存在的目录，必须先设置 `NPM_CONFIG_PREFIX`。

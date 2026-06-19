@@ -1,0 +1,21 @@
+---
+description: prefer graphify-impact for change impact analysis
+alwaysApply: true
+---
+
+当用户的问题更偏向以下场景时，优先读取并遵循 `/.cursor/skills/graphify-impact/SKILL.md`：
+
+- 改动影响面评估
+- 依赖反查
+- 重构前风险分析
+- `谁依赖它` / `改这里会影响哪里`
+- 修改后应优先验证哪些流程
+
+执行原则：
+
+1. **先做影响分析，再决定改动范围**
+2. 优先 `graphify affected "<node>"`
+3. 必要时补 `graphify path "<A>" "<B>"`
+4. 对不清楚的受影响节点补 `graphify explain "<node>"`
+5. 然后再读取最相关的少量源码
+6. 代码修改完成后运行 `graphify update .`

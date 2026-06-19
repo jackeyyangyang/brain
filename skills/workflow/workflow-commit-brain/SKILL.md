@@ -25,20 +25,30 @@ description: 简化版 commit skill，自动执行提交。当用户说"/commit"
 
 展示当前状态。
 
-### 3. 分析改动，确定 commit
+### 3. 检查远程更新
+
+```bash
+git fetch origin
+git status
+```
+
+若有远程更新，提示用户是否需要 merge 或 rebase。
+
+### 4. 分析改动，确定 commit
 
 根据改动内容，生成 1 个规范 commit。
 
-### 4. 自动执行
+### 5. 自动执行
 
 ```bash
 git add .
 git commit -m "<message>"
+git push
 ```
 
-### 5. 展示结果
+### 6. 展示结果
 
-显示 commit hash 和 message。
+显示 commit hash、message 和 push 状态。
 
 ## Commit message 规范
 
