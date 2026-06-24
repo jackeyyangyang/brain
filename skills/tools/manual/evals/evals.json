@@ -1,0 +1,29 @@
+{
+  "skill_name": "manual",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "new-module-add-manual",
+      "prompt": "我刚在 baselines/reason-3d 下新增了一个模块 build_scene/PlaceObjects.py，CLI 参数是 --prompt 和 --output-dir，没有其他选项。请帮我按 manual/ 约定生成对应的运行手册：manual/bash/placeobjects.sh（变量在顶部可编辑，用 prompt 和 out_dir 两个变量），manual/code/placeobjects.md（最简 CLI 速查），以及在 manual/guide/ 下补一个 coordinates.md（说明项目用的是 Blender 坐标，Y 轴向上，单位是米，视角数 1/2/4/6，输出 JSON 文件里物体坐标是浮点数，不要四舍五入）。",
+      "expected_output": "manual/bash/placeobjects.sh、manual/code/placeobjects.md、manual/guide/coordinates.md 三个文件被创建，bash 脚本顶部变量可编辑，code 里参数速查精简，guide 里有一句话结论和关键坑点列表。",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "eval_name": "parameter-change-sync",
+      "prompt": "baselines/reason-3d/rendering/render_layout_lightgame.py 新增了 --samples 参数，默认值 128，范围 1-4096，用于控制 Cycles 采样数。旧的 --views 参数保持不变。请帮我更新 manual/：同步 manual/bash/render.sh 顶部新增 SAMPLES 变量（可编辑），在 manual/code/render.md 的参数表里新增 --samples 这一行，并在 manual/guide/ 下新建一个 render-views.md 说明 --views 的含义（多视角相机布局：1=正面，2=正前+俯视，4=加左右，6=再加后视），输出是 render_0.png ~ render_5.png。",
+      "expected_output": "manual/bash/render.sh 顶部出现 SAMPLES 变量，manual/code/render.md 参数表包含 --samples，manual/guide/render-views.md 有一句话结论和视图布局说明。",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "eval_name": "hallucination-prevention-notes",
+      "prompt": "项目中经常有人误以为坐标系是右手 Z 轴向上（其实是 Y 轴向上），并且以为输出 JSON 里坐标会被自动四舍五入（实际是浮点数）。请在 manual/guide/ 下补一个坐标系统一说明：manual/guide/coordinates.md 写坐标系、单位、轴方向；manual/guide/coordinate-flow.md 写坐标从 prompt -> PlaceObjects -> JSON -> Blender 的流转过程，每个环节的单位和精度。",
+      "expected_output": "manual/guide/coordinates.md 和 manual/guide/coordinate-flow.md 两个文件被创建，均有一句话结论 + 关键坑点 + 相关文件列表，坐标流转覆盖 prompt/PlaceObjects/JSON/Blender 四环节。",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

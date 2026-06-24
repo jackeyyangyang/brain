@@ -217,6 +217,12 @@
       "description": "运行方法维护"
     },
     {
+      "name": "manual",
+      "path": "tools/manual/SKILL.md",
+      "tags": ["manual", "runtime", "docs"],
+      "description": "项目运行手册维护（manual/ 目录）"
+    },
+    {
       "name": "good-question",
       "path": "tools/good-question/SKILL.md",
       "tags": ["question", "research"],
