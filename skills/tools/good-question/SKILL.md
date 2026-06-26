@@ -1,6 +1,8 @@
 ---
 name: good-question
-description: "当研究者在选择、构建、细化或压力测试研究问题、假设、论题、项目想法、资助方向、论文角度或停滞的研究方向时使用。"
+description: 当研究者在选择、构建、细化或压力测试研究问题、假设、论题、项目想法、资助方向、论文角度或停滞的研究方向时使用。
+allowed-tools: 
+disable: true
 ---
 
 # Good Question

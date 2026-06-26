@@ -1,6 +1,6 @@
 ---
 name: academic-paper-reviewer
-description: "多视角学术论文评审。模拟 5 个独立评审人（主编 + 3 位同行评审 + 魔鬼代言人），具备领域专属专长。支持完整评审、再评审（验证）、快速评估、方法论聚焦、苏格拉底引导、评审人校准等模式。触发场景：评审论文、同行评审、稿件评审、审稿报告、评审我的论文、批评论文、模拟评审、编辑评审、校准评审人、评审人校准、测量评审人准确度。"
+description: 多视角学术论文评审。模拟 5 个独立评审人（主编 + 3 位同行评审 + 魔鬼代言人），具备领域专属专长。支持完整评审、再评审（验证）、快速评估、方法论聚焦、苏格拉底引导、评审人校准等模式。触发场景：评审论文、同行评审、稿件评审、审稿报告、评审我的论文、批评论文、模拟评审、编辑评审、校准评审人、评审人校准、测量评审人准确度。
 metadata:
   version: "1.10.0"
   last_updated: "2026-06-01"
@@ -10,6 +10,8 @@ metadata:
   related_skills:
     - academic-paper
     - academic-pipeline
+allowed-tools: 
+disable: true
 ---
 
 # Academic Paper Reviewer v1.10.0 — Multi-Perspective Academic Paper Review Agent Team

@@ -1,6 +1,8 @@
 ---
 name: graphify-impact
 description: 使用 graphify 优先做改动前影响分析、依赖反查、验证建议与改动后图谱同步。适合修改前评估和修改后校验。
+allowed-tools: 
+disable: true
 ---
 
 当用户准备改代码，或问“改这里会影响什么”“谁依赖它”“先帮我评估风险”时，启用此 skill。

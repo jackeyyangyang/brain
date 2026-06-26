@@ -1,6 +1,6 @@
 ---
 name: academic-pipeline
-description: "完整学术研究流水线编排：研究 → 写作 → 完整性核查 → 评审 → 修改 → 再评审 → 再修改 → 最终完整性核查 → 定稿。协调 deep-research、academic-paper、academic-paper-reviewer 三大模块，形成无衔接的 10 阶段工作流，含强制性完整性验证、两阶段同行评审、可复现质量门控。触发场景：学术流水线、研究到论文、完整论文工作流、论文流水线、端到端论文、研究到发表、完整论文工作流。"
+description: 完整学术研究流水线编排：研究 → 写作 → 完整性核查 → 评审 → 修改 → 再评审 → 再修改 → 最终完整性核查 → 定稿。协调 deep-research、academic-paper、academic-paper-reviewer 三大模块，形成无衔接的 10 阶段工作流，含强制性完整性验证、两阶段同行评审、可复现质量门控。触发场景：学术流水线、研究到论文、完整论文工作流、论文流水线、端到端论文、研究到发表、完整论文工作流。
 metadata:
   version: "3.12.0"
   last_updated: "2026-06-08"
@@ -12,6 +12,8 @@ metadata:
     - deep-research
     - academic-paper
     - academic-paper-reviewer
+allowed-tools: 
+disable: true
 ---
 
 # Academic Pipeline v3.12.0 — Full Academic Research Workflow Orchestrator

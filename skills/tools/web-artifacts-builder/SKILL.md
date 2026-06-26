@@ -2,6 +2,8 @@
 name: web-artifacts-builder
 description: 一套用于创建复杂、多组件 claude.ai HTML artifact 的工具，使用现代前端技术栈（React、Tailwind CSS、shadcn/ui）。适用于需要状态管理、路由或 shadcn/ui 组件的复杂 artifact——不适合简单的单文件 HTML/JSX artifact。
 license: Complete terms in LICENSE.txt
+allowed-tools: 
+disable: true
 ---
 
 # Web Artifacts Builder

@@ -1,6 +1,8 @@
 ---
 name: literature-search-arxiv
-description: "在 arXiv 上搜索科学论文、预印本和出版物。提取元数据、摘要，下载全文 PDF 或 HTML 版本。触发场景：用户要求查找研究论文、文献或指定 arXiv ID。"
+description: 在 arXiv 上搜索科学论文、预印本和出版物。提取元数据、摘要，下载全文 PDF 或 HTML 版本。触发场景：用户要求查找研究论文、文献或指定 arXiv ID。
+allowed-tools: 
+disable: true
 ---
 
 # arXiv Search and Retrieval

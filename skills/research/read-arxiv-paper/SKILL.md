@@ -37,4 +37,17 @@ Once you've found the entrypoint, Read the contents and then recurse through all
 
 Once you've read the paper, produce a summary of the paper into a markdown file at `./knowledge/summary_{tag}.md`. Notice that 1) use the local knowledge directory here (it's easier for me to open and reference here), not in `~/.cache`, and 2) generate some reasonable `tag` like e.g. `conditional_memory` or whatever seems appropriate given the paper. Probably make sure that the tag doesn't exist yet so you're not overwriting files.
 
-As for the summary itself, remember that you're processing this paper within the context of the nanochat repository, so most often we will be interested in how to apply the paper and its lessons to the nanochat project. Therefore, you should feel free to "remind yourself" of the related nanochat code by reading the relevant parts, and then explicitly make the connection of how this paper might relate to nanochat or what are things we might be inspired about or try.
+As for the summary itself, remember that you're processing this paper within the context of the nanochat repository, so most often we will be interested in how to apply the paper and its lessons to the nanochat project. Therefore, you should feel free to "reminder yourself" of the related nanochat code by reading the relevant parts, and then explicitly make the connection of how this paper might relate to nanochat or what are things we might be inspired about or try.
+
+### Part 7: Plain-language Explanation
+
+After completing the formal summary, write an additional plain-language explanation section in the same markdown file. This section should:
+
+- Use **simple, everyday language** (avoid academic jargon and heavy math notation)
+- Use **concrete analogies or real-world examples** to illustrate core ideas
+- Explain **what problem the paper solves** in one sentence
+- Explain **how the method works** using a step-by-step analogy (e.g., "imagine you're trying to find your keys in a messy room...")
+- Highlight **what makes this approach different** from prior work
+- If applicable, include a brief **"what it can do"** section with a simple table of capabilities
+
+The plain-language section should have the header `## 通俗解读` (or `## Plain-Language Explanation` if the user communicates in English), and should be output **only in the conversation reply** — the markdown file should contain only the formal summary from Part 6.

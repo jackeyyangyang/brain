@@ -1,6 +1,8 @@
 ---
 name: graphify-power
 description: 最大化利用 graphify 进行代码库理解、依赖追踪、影响分析和修改后校验。遇到代码库问题时优先用 graphify 缩小范围，再决定是否读取源码。适用于架构理解、调用链分析、模块关系、改动影响面、知识沉淀等场景。
+allowed-tools: 
+disable: true
 ---
 
 当用户要理解代码库、分析模块关系、定位调用链、评估改动影响、复盘知识、或要求“尽量用 graphify”时，启用此 skill。

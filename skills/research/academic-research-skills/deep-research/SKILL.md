@@ -1,6 +1,6 @@
 ---
 name: deep-research
-description: "通用深度研究智能体团队。13 智能体流水线，适用于任何主题的严格学术研究。7 种模式：完整研究、快速简报、论文评审、文献综述、事实核查、苏格拉底引导式研究对话、可选元分析的系统性综述。覆盖研究问题构建、苏格拉底指导、方法论设计、系统化文献检索、来源验证、跨源综合、偏倚风险评估、元分析、APA 7.0 报告编译、编辑评审、魔鬼代言人挑战、伦理审查、研究后文献监测。触发场景：research、deep research、literature review、systematic review、meta-analysis、PRISMA、evidence synthesis、fact-check、guide my research、help me think through、研究、深度研究、文獻回顧、文獻探討、系統性回顧、後設分析、事實查核、引導我的研究、幫我釐清、幫我想想、我不知道研究什么、研究方向、研究主題。"
+description: 通用深度研究智能体团队。13 智能体流水线，适用于任何主题的严格学术研究。7 种模式：完整研究、快速简报、论文评审、文献综述、事实核查、苏格拉底引导式研究对话、可选元分析的系统性综述。覆盖研究问题构建、苏格拉底指导、方法论设计、系统化文献检索、来源验证、跨源综合、偏倚风险评估、元分析、APA 7.0 报告编译、编辑评审、魔鬼代言人挑战、伦理审查、研究后文献监测。触发场景：research、deep research、literature review、systematic review、meta-analysis、PRISMA、evidence synthesis、fact-check、guide my research、help me think through、研究、深度研究、文獻回顧、文獻探討、系統性回顧、後設分析、事實查核、引導我的研究、幫我釐清、幫我想想、我不知道研究什么、研究方向、研究主題。
 metadata:
   version: "2.9.4"
   last_updated: "2026-05-18"
@@ -10,6 +10,8 @@ metadata:
   related_skills:
     - academic-paper
     - academic-pipeline
+allowed-tools: 
+disable: true
 ---
 
 # Deep Research — Universal Academic Research Agent Team

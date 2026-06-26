@@ -1,6 +1,8 @@
 ---
 name: doc-coauthoring
 description: 通过结构化工作流引导用户协作撰写文档。当用户想写文档、proposal、技术规格说明、决策文档或类似的结构化内容时使用。这个工作流帮助用户高效传递上下文、通过迭代打磨内容，并验证文档对读者是否真正有效。当用户提到写文档、创建 proposal、起草 spec 或类似文档任务时触发。
+allowed-tools: 
+disable: true
 ---
 
 # 文档协作撰写工作流

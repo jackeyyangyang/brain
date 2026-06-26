@@ -1,6 +1,6 @@
 ---
 name: academic-paper
-description: "12 智能体学术论文写作流水线。10 种模式（完整/计划/大纲/修改/修改教练/摘要/文献综述/格式转换/引用核查/披露）。支持 6 种论文类型、5 种引用格式、双语摘要，输出 LaTeX/DOCX-via-Pandoc/PDF。包含风格校准、写作质量检查、反模式（IRON RULE 标记）。触发场景：写论文、学术论文、指导我写论文、解析评审意见、AI 披露、写論文、學術論文、引導我寫論文、審查意見。"
+description: 12 智能体学术论文写作流水线。10 种模式（完整/计划/大纲/修改/修改教练/摘要/文献综述/格式转换/引用核查/披露）。支持 6 种论文类型、5 种引用格式、双语摘要，输出 LaTeX/DOCX-via-Pandoc/PDF。包含风格校准、写作质量检查、反模式（IRON RULE 标记）。触发场景：写论文、学术论文、指导我写论文、解析评审意见、AI 披露、写論文、學術論文、引導我寫論文、審查意見。
 metadata:
   version: "3.2.0"
   last_updated: "2026-06-01"
@@ -11,6 +11,8 @@ metadata:
     - deep-research
     - academic-paper-reviewer
     - academic-pipeline
+allowed-tools: 
+disable: true
 ---
 
 # Academic Paper — Academic Paper Writing Agent Team

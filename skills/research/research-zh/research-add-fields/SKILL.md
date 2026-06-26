@@ -3,6 +3,7 @@ name: research-add-fields
 user-invocable: true
 description: 向现有调研outline补充字段定义。
 allowed-tools: Bash, Read, Write, Glob, WebSearch, Task, AskUserQuestion
+disable: true
 ---
 
 # Research Add Fields - 补充调研字段

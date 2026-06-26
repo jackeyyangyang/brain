@@ -1,10 +1,12 @@
 ---
 name: paperjury
-description: "CS 会议论文（CVPR/ICCV/ECCV 视觉，ACL/EMNLP/NAACL NLP，ICLR/NeurIPS/ICML/AAAI 机器学习）专用三模式写作工具。DIRECT-EDIT 模式（最常用）：用户用中英文描述改动，LaTeX 通过 CS 会议写作工具包直接编辑并经作者签字确认（用于 改这段/把中文想法写成 latex/polish/de-AI/翻译/压缩段落）。REVIEW 模式（偶尔用，提交前）：通过对抗式法庭评审引擎硬化论文（N 位整体领域评审人/可争议性路由/双方庭审/三方裁决/书记收敛多轮循环），需经共识门控与作者签字修订（用于 review/critique/审稿/评审/mock-review）。AUTO 模式（无人值守，需通过 /goal 显式启用）：在漂移受限策略下运行 review-revise 循环以达成可验证目标，应用安全修复并将风险修复入队。所有输入运行时解析，不硬编码路径。并非从零起草工具（请用 ml-paper-writing），也非官方会议 rebuttal。"
+description: CS 会议论文（CVPR/ICCV/ECCV 视觉，ACL/EMNLP/NAACL NLP，ICLR/NeurIPS/ICML/AAAI 机器学习）专用三模式写作工具。DIRECT-EDIT 模式（最常用）：用户用中英文描述改动，LaTeX 通过 CS 会议写作工具包直接编辑并经作者签字确认（用于 改这段/把中文想法写成 latex/polish/de-AI/翻译/压缩段落）。REVIEW 模式（偶尔用，提交前）：通过对抗式法庭评审引擎硬化论文（N 位整体领域评审人/可争议性路由/双方庭审/三方裁决/书记收敛多轮循环），需经共识门控与作者签字修订（用于 review/critique/审稿/评审/mock-review）。AUTO 模式（无人值守，需通过 /goal 显式启用）：在漂移受限策略下运行 review-revise 循环以达成可验证目标，应用安全修复并将风险修复入队。所有输入运行时解析，不硬编码路径。并非从零起草工具（请用 ml-paper-writing），也非官方会议 rebuttal。
 version: 1.0.0
 author: Yiran Wang
 license: MIT
 tags: [Academic Writing, Peer Review, Adversarial Review, CVPR, ICCV, ECCV, ACL, EMNLP, NAACL, ICLR, NeurIPS, ICML, AAAI, Workflow, LaTeX]
+allowed-tools: 
+disable: true
 ---
 
 # PaperJury (CS-conference paper review and editing)
